@@ -22,13 +22,13 @@ custom_rvm_ruby () {
   if which rvm-prompt &> /dev/null; then
     _rvm_ver="$(rvm-prompt i v)"
     if [ -n "$_rvm_ver" ]; then
-      _rvm_ruby='%{$fg[red]%}‹$(rvm-prompt i v)$fg[magenta]%}$(rvm-prompt g)%{$fg[red]%}›%{$reset_color%} '
+      _rvm_ruby="%{$fg[red]%}‹$(rvm-prompt i v)$fg[magenta]%}$(rvm-prompt g)%{$fg[red]%}›%{$reset_color%} "
     fi
   else
     if which rbenv &> /dev/null; then
       _rvm_ver='$(rbenv version | sed -e "s/ (set.*$//")'
-      if [[ "${_rvm_ver}x" != "x" ]]; then
-        _rvm_ruby='%{$fg[red]%}‹$_rvm_ver›%{$reset_color%} '
+      if [ -n "$_rvm_ver" ]; then
+        _rvm_ruby="%{$fg[red]%}‹$(rbenv version | sed -e "s/ (set.*$//")›%{$reset_color%} "
       fi
     fi
   fi
