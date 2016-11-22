@@ -18,6 +18,16 @@ ZSH_THEME_GIT_PROMPT_STAGED="%{$fg_bold[green]%}●%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg_bold[yellow]%}●%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg_bold[red]%}●%{$reset_color%}"
 
+custom_kube_context () {
+  _current_context="$(kubectl config current-context 2&> /dev/null)"
+  if [ -n _current_context ]; then
+    _kube_context="%{$fg[red]%}‹$_current_context›%{$reset_color%} "
+  else
+    _kube_context=""
+  fi
+  echo "${_kube_context}"
+}
+
 custom_rvm_ruby () {
   if which rvm-prompt &> /dev/null; then
     _rvm_ver="$(rvm-prompt i v)"
@@ -114,7 +124,7 @@ get_space () {
 _1LEFT="╭─${user_host} ${current_dir}"
 
 custom_precmd () {
-  _1RIGHT="%{$fg[$NCOLOR]%}%p $(custom_rvm_ruby)$(custom_git_prompt)%{$reset_color%}"
+  _1RIGHT="%{$fg[$NCOLOR]%}%p $(custom_kube_context)$(custom_git_prompt)%{$reset_color%}"
   _1SPACES=`get_space $_1LEFT $_1RIGHT`
   print
   print -rP "$_1LEFT$_1SPACES$_1RIGHT"
